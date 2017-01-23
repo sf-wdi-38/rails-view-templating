@@ -29,11 +29,11 @@ In Rails, the pages a user sees are rendered as a combination of a layout templa
 
 We can use layouts for the lines of HTML that link site-wide CSS and JavaScript files. We can also use it for material like a footer that stays the same across many pages from multiple controllers.
 
-<img src="https://raw.githubusercontent.com/sf-wdi-34/angular-routing/master/views_layouts_malcolm.png" alt="single goat show page with details">
+<img src="https://raw.githubusercontent.com/sf-wdi-34/angular-routing/master/views_layouts_malcolm.png" alt="single goat show page with details" width="60%">
 
-Views are always rendered into the `<%= yield %>` tag in a layout.
+Views are always rendered into a `<%= yield %>` tag in a layout.
 
-When the app is created, Rails will automatically add a layout `application.html.erb` in `app/views/layouts/application.html.erb`. This layout already contains a yield statement and all the links to CSS and JavaScript files in the head part of the HTML document.
+When the app is created, Rails will automatically add a layout **`app/views/layouts/application.html.erb`**. This layout already contains a `yield` statement, a `<head>` section, and links to the app's CSS and JavaScript files.
 
 ### Views
 
@@ -59,27 +59,23 @@ Partials allow us to take a portion of a template and move it into a separate fi
 * Separating code into partials makes our views more modular and easier to change.
 </details>
 
-Using partials:
-
-* Partials are always named starting with an underscore: `app/views/products/_form.html.erb` or `app/views/shared/_menu.rb`.  
-* Partials can be called directly from inside a view file.  `<%= render "form" %>`.  Note that you don't  specify the `_` when rendering the partial.
-* You can pass data to a partial: `<%= render partial: "customer", object: @new_customer %>`
-
-You can also create partial layouts, but those are less common in apps of the size we're dealing with.
-
 
 ### Adding Partials to a View
 
-We add the ERB from partials files into a view with `render`. Here are examples of common use cases:
+Partials are always named starting with an underscore: `app/views/products/_form.html.erb` or `app/views/shared/_menu.rb`.  
 
-1. Render a partial from a file called `app/views/products/_product.html.erb`.
+Partials are included from inside a view file.  The syntax uses the view helper method `render`: `<%= render "form" %>`.  Note that you don't include the starting `_` when rendering a partial.
+
+Here is syntax for some examples of common use cases:
+
+1. In a view, render a partial from a file called `app/views/products/_product.html.erb`.
 
   ```erb
   <%- # inside app/views/products/show.html.erb %>
   <%= render "product" %>
   ```
 
-1. Render a partial from a file called `app/views/shared/_footer.html.erb`.
+1. In a view, render a partial from a file inside a directory, called `app/views/shared/_footer.html.erb`.
   ```erb
   <%- # inside app/views/products/show.html.erb %>
   <%= render "shared/footer" %>
@@ -92,14 +88,21 @@ We add the ERB from partials files into a view with `render`. Here are examples 
   <% @products.each do |product| %>
     <%= render partial: "product", locals: {product: product} %>
   <% end %>
+  
+  or 
+  
+  <%= render partial: "customer", object: @customer %>
+
   ```
 
-  Rails win! There's also a shorter syntax for the common pattern of repeating a partial for all items in a collection:
+  > There's also a shorter syntax for the common pattern of repeating a partial for all items in a collection:
 
   ```erb
   <%- # inside app/views/products/index.html.erb %>
   <%= render partial: "product", collection: @products %>
   ```
+  
+  The Layouts and Rendering Rails guide section on [using partials](http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials) has more information and examples. 
 
 ###Check for Understanding: Using Partials and Layouts
 
@@ -144,7 +147,7 @@ We add the ERB from partials files into a view with `render`. Here are examples 
 
 We can also move the header and/or the footer into a partial.  This option would be best when for example we only use the menu on some pages, but not all. For instance, if the home page uses a hero image in place of the header, we should move that header with menu section to a partial.
 
-2)  What would our layout, view, and template look like if the header with menu section is a partial?
+2)  What would our layout, view, and template look like if the header/menu section is a partial?
 
   <details><summary>click for an answer</summary>
 
@@ -177,54 +180,20 @@ We can also move the header and/or the footer into a partial.  This option would
 
 
   </details>
+  
+Alternately, if the header is on every page, we could keep the main layout file short by adding a named `yield` and [`content_for`](http://guides.rubyonrails.org/layouts_and_rendering.html#using-the-content-for-method).
 
 
-A very common example of using partials in Rails is moving code for a new/edit form into a partial.
-
-```
-# new.html.erb
------  new instructions text  -----
------  form                   -----
------  form-inputs            -----
------  form-submit            -----
------  next steps info        -----
-
-# edit.html.erb
------  edit instructions text -----
------  form                   -----
------  form-inputs            -----
------  form-submit            -----
-```
-
-Take the form out of both pages and put it inside a partial.  Result:
-
-```
-# new.html.erb
------  new instructions text  -----
------  render :form           -----
------  next steps info        -----
-
-# edit.html.erb
------  edit instructions text -----
------  render :form           -----
-
-# _form.html.erb
------  form                   -----
------  form-inputs            -----
------  form-submit            -----
-```
-
+> A very common example of using partials in Rails is moving code for a new/edit form into a partial.
 
 **Check for Understanding**
 
-An app might has `app/views/products` with the files listed below.  Explain what each file is for.
+An app has an `app/views/products` directory with the files listed below.  Explain what each file is for.
 
 ```
 _form.html.erb
-edit.html.erb
 index.html.erb
 index.json.jbuilder
-new.html.erb
 show.html.erb
 show.json.jbuilder
 ```
@@ -587,7 +556,7 @@ Research one of the methods below, and prepare to give a 2 sentence explanation 
 
 ### Closing Thoughts
 
-- Describe how layouts, views & partial work together.
+- Describe how layouts, views & partials work together.
 - How can we figure out what path helpers are available?
 - Why would we use `form_for` and `link_to`?
 - Where would you look for syntax for Rails form helpers?
