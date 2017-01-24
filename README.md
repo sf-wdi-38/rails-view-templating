@@ -10,7 +10,7 @@ We want pages users can see and interact with! And we want to take advantage of 
 ### Objectives
 *After this lesson, developers will be able to:*
 
-- Describe how layouts, view templates, and partial templates work together.
+- Describe how layouts, view templates, and partials work together.
 - Recognize rails url helpers and path helpers.
 - Explain benefits of using Rails form helpers and link helpers.
 - Find and determine correct syntax for Rails form helpers and link helpers.
