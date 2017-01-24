@@ -297,7 +297,7 @@ Rails 5 comes bundled with a [`jbuilder`](https://github.com/rails/jbuilder) gem
 <hr>
 <br><br>
 
-## Helpers in Rails
+# Helpers in Rails
 
 Rails provides a ton of helper methods to make it easier to write code. Today, we'll look at a few important helpers that every Rails app should take advantage of.
 
