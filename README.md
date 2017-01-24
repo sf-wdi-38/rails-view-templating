@@ -66,7 +66,7 @@ Partials are always named starting with an underscore: `app/views/products/_form
 
 Partials are included from inside a view file.  The syntax uses the view helper method `render`: `<%= render "form" %>`.  Note that you don't include the starting `_` when rendering a partial.
 
-Here is syntax for some examples of common use cases:
+Here is syntax for the most common use cases:
 
 1. In a view, render a partial from a file called `app/views/products/_product.html.erb`.
 
@@ -81,7 +81,9 @@ Here is syntax for some examples of common use cases:
   <%= render "shared/footer" %>
   ```
 
-1. Pass a variable `product` to a partial to be used within the partial:
+<details><summary>You can also pass data into a partial. Click for example syntax.</summary>
+
+ Pass a variable `product` to a partial to be used within the partial:
 
   ```erb
   <%- # inside app/views/products/index.html.erb %>
@@ -94,19 +96,21 @@ Here is syntax for some examples of common use cases:
   <%= render partial: "customer", object: @customer %>
 
   ```
-
-  > There's also a shorter syntax for the common pattern of repeating a partial for all items in a collection:
+  
+  There's also a shorter syntax for the common pattern of repeating a partial for all items in a collection:
 
   ```erb
   <%- # inside app/views/products/index.html.erb %>
   <%= render partial: "product", collection: @products %>
   ```
+  </details>
+  
   
   The Layouts and Rendering Rails guide section on [using partials](http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials) has more information and examples. 
 
 ###Check for Understanding: Using Partials and Layouts
 
-1)  How can we split up pages into layout and views if the website is structured like this:
+1)  How can we split up pages into layout and views if the website is structured as shown below?
 
   <img src="https://raw.githubusercontent.com/sf-wdi-34/angular-routing/master/goats_app.png" width="600px" alt="goat app screenshots">
 
@@ -114,95 +118,120 @@ Here is syntax for some examples of common use cases:
 
   In Rails, the page `<head>` will already be in the application layout.
 
-  We can move the top menu and the footer into the layout, or we could create partials to make sure the layout stays short.
+  We can move the top menu and the footer into the layout to DRY up the individual pages.
 
-  This give us a layout...
+  **Layout:**
+
+  ```html
+  <!DOCTYPE html>
+  <head>
+    <!-- metadata, CSS link, JS link -->
+  </head>
+  <body>
+    <header>
+      <!-- all header & menu html.erb -->
+    </header>
+    <%= yield %>
+    <footer>
+      <!-- all footer html.erb -->
+    </footer>
+  </body>
+  ```
+
+  **View templates:**
 
   ```
-    <!DOCTYPE html>
-    <head>
-        <!-- metadata, CSS link, JS link -->
-    </head>
-    <body>
-      <header>
-        <!-- all header & menu html.erb -->
-      </header>
-      <%= yield %>
-      <footer>
-        <!-- all footer html.erb -->
-      </footer>
-    </body>
-  ```
-
-  ... and templates for the content of each page, one of which might start out:
-
-  ```
+  <!-- app/views/goats/show.html.erb -->
+  <!-- show page main content -->
   <%= image_tag(@goat.image_url) %>
-  <!-- continue single page html.erb -->
+    <!-- continue single goat show page html.erb -->
+  ```
+  
+  ```
+  <!-- app/views/goats/index.html.erb -->
+  <!-- index page main content -->
+  <%= @goats.each do |goat| %>
+     <!-- continue goat list page html.erb -->
   ```
 
 
   Remember: `yield` is where the current page content will be rendered.
 </details>
 
-We can also move the header and/or the footer into a partial.  This option would be best when for example we only use the menu on some pages, but not all. For instance, if the home page uses a hero image in place of the header, we should move that header with menu section to a partial.
+We can also move the header and/or the footer into a partial.  This option would be best when we only use the menu on some pages, and other pages use different content for that portion of the page. For example, the home page might use a hero image in place of the header.
 
-2)  What would our layout, view, and template look like if the header/menu section is a partial?
+2)  What would our layout, view, and template look like if the header/menu section is a partial and we have a partial for the hero image as well?
 
   <details><summary>click for an answer</summary>
 
   **Layout:**
 
   ```
-    <!DOCTYPE html>
-    <head>
-        <!-- metadata, CSS link, JS link -->
-    </head>
-    <body>
-      <%= yield %>
-      <footer>
-        <!-- all footer html.erb -->
-      </footer>
-    </body>
+  <!DOCTYPE html>
+  <head>
+      <!-- metadata, CSS link, JS link -->
+  </head>
+  <body>
+    <%= yield %>
+    <footer>
+      <!-- all footer html.erb -->
+    </footer>
+  </body>
   ```
 
-  **View Templates:**
+  **View templates:**
 
   ```
+  <!-- app/views/wecome/about.html.erb -->
   <%= render "shared/header" %>
   <!-- continue current page content -->
   ```
   or, on another page,
   ```
+  <!-- app/views/welcome/index.html.erb -->
   <%= render "shared/hero_image" %>
   <!-- continue current page content -->
   ```
-
-
   </details>
   
 Alternately, if the header is on every page, we could keep the main layout file short by adding a named `yield` and [`content_for`](http://guides.rubyonrails.org/layouts_and_rendering.html#using-the-content-for-method).
 
+<details><summary>click for example</summary>
+
+**Layout:**
+
+ ```
+ <!DOCTYPE html>
+ <html>
+   <head>
+   <%= yield :head %>
+   </head>
+   <body>
+   <%= yield %>
+   </body>
+ </html>
+ ```
+ 
+ **View templates**:
+ 
+ ```
+ <% content_for :head do %>
+   <title>Goat Tracker - About</title>
+ <% end %>
+
+ <%= render "shared/header" %>
+ <!-- rest of the about page content -->
+ ```
+ 
+</details>
+
 
 > A very common example of using partials in Rails is moving code for a new/edit form into a partial.
 
-**Check for Understanding**
 
-An app has an `app/views/products` directory with the files listed below.  Explain what each file is for.
-
-```
-_form.html.erb
-index.html.erb
-index.json.jbuilder
-show.html.erb
-show.json.jbuilder
-```
-
-
-## Using Views with Rails
+## Views with Controllers
 
 Now that we've gone over how layout templates, view templates, and partial templates come together to create the pages users see, let's dive into how our apps' controllers will trigger these views.
-
 
 Every route in Rails will execute a method inside a controller. In Rails, the basic logic for rendering an HTML view is straightforward.  When the method is executed:
 
@@ -232,7 +261,7 @@ In the rest of the controller actions, you *won't* use the default rendering beh
   * `destroy` - work with the database to destroy one record
 </details>
 
-
+### Controller Redirect
 Lets take a look at a `create` action:
 
 ```ruby
@@ -258,22 +287,26 @@ If the new post `@post` correctly saves, the response will be a redirect to that
 
 We've seen two ways to do something other than rendering the HTML view that matches our controller action name:
  - We can redirect to another action.  
- - We can use a `render` statement to specify a view to render.
+ - We can use a `render` statement to specify a view to render that doesn't match the action name.
 
-> HOORAY!  Rails 5 comes bundled with a `jbuilder` gem that helps us create JSON views instead of HTML. Why is this awesome?
 
+### JSON Views
+
+Rails 5 comes bundled with a [`jbuilder`](https://github.com/rails/jbuilder) gem that helps us create JSON views instead of HTML. Why is this awesome?
+
+<hr>
+<br><br>
 
 ## Helpers in Rails
 
 Rails provides a ton of helper methods to make it easier to write code. Today, we'll look at a few important helpers that every Rails app should take advantage of.
 
 
-
 ### Path Helpers
 
 Rails adds helper methods that return the paths for routes in your app.  These are configured through the `config/routes.rb` file.
 
-Here's some `rake routes` output:
+Here's some `rails routes` output:
 
 ```
 $ rake routes
@@ -288,16 +321,19 @@ edit_turkey GET    /turkeys/:id/edit(.:format) turkeys#edit
             DELETE /turkeys/:id(.:format)      turkeys#destroy
 ```
 
-The **Prefix** on the left clues us in to the available URL and path helpers.  Just taking the first line, we can tell that a `turkeys_path` helper exists. This method will return the path that corresponds to the index route for all turkeys (`'/turkeys`).  Looking further down the line, we can see following helpers exist: `new_turkey_path`, `edit_turkey_path`, `turkey_path`.
+The **Prefix** on the left clues us in to the available URL and path helpers.  
 
-Some of those routes require an **id**.  For those helpers, we'll pass an object (or an integer) to tell the helper how to fill in the id portion of the path.  
+Just taking the first line, we can tell that a `turkeys_path` helper exists. This method will return the path that corresponds to the index route for all turkeys (`'/turkeys`).  
+
+Looking further down the line, we can see following helpers exist: `new_turkey_path`, `edit_turkey_path`, `turkey_path`.
+
+Some of those routes require an **id**.  For those helpers, we'll pass an argument to tell the helper how to fill in the id portion of the path.  
 
 ```
 # examples
 turkey_path(12)        =>  "turkeys/12/edit"
 turkey_path(@turkey)   =>  "turkeys/#{@turkey.id}"
 ```
-
 
 You can set individual route prefixes by using `as:` in your routes.
 
@@ -315,13 +351,13 @@ The turkeys output from above used `resources` in the route configuration, so th
 
 There are also URL helpers that use the same prefixes to generate a full URL instead of just the path part. For instance, `turkeys_url`. See the Rails Routing Guide [Path and URL helpers section](http://guides.rubyonrails.org/routing.html#path-and-url-helpers).
 
-## View Helpers
+### View Helpers
 
 Rails provides a huge swath of helpers designed to make it more convenient to generate HTML for your views, especially HTML related to your resources.  These view helpers also enforce the Rails way by automatically setting some attributes inside the HTML.  
 
 Let's start by looking at some simple and very commonly used view helpers.
 
-### `link_to` and `button_to`
+#### `link_to` and `button_to`
 
 Pair up. One person should silently skim the documentation for [`link_to`](http://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to).   The other should silently skim the documentation for
 [`button_to`](http://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-button_to).
@@ -363,7 +399,7 @@ Image delete button
 
 #### PUT, PATCH, DELETE
 
-Most browsers don't support PUT, PATCH & DELETE as form submission methods.  Rails however has a _work-around_ for this.  
+Some browsers don't support PUT, PATCH & DELETE as form submission methods.  Rails however has a _work-around_ for this.  
 
 Rails adds a hidden form field and processes this on a POST request, internally changing the request type.  
 
@@ -380,7 +416,7 @@ form_tag(search_path, method: "patch")
 </form>
 ```
 
-> Tip: run `rake routes` and look at the Prefix column to see what `_path` helpers are available.
+> Remember: run `rails routes` and look at the Prefix column to see what `_path` helpers are available.
 
 | Path helper          | using this path helper  with link_to |
 |---------------------| -------------------------------------------|
@@ -390,7 +426,7 @@ form_tag(search_path, method: "patch")
 | `turkey_path`         | `link_to "view this turkey", turkey_path @turkey ` |
 | `turkey_path`         | `link_to "view this turkey", turkey_path 12` |
 
-## Form Helpers
+### Form Helpers
 
 As we saw with `button_to`, Rails can generate forms for us.  There are two main kinds of helpers we can use to generate forms:  [FormTagHelper](http://api.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html) and [FormBuilderHelper](http://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html).  You can read more about both in the [Form Helpers Rails Guide](http://guides.rubyonrails.org/form_helpers.html)
 
@@ -447,7 +483,7 @@ As we saw with `button_to`, Rails can generate forms for us.  There are two main
 
   </details>
 
-### Form Builder and `form_for`
+#### Form Builder and `form_for`
 
 We'll mostly be working with resources, so it's important to get some exposure to `form_for`.
 
@@ -492,7 +528,7 @@ In Rails, we access this data in a controller through the `params` hash.  In the
 }
 ```
 
-It's a best practice to use "strong parameters," which is a pattern of using built-in methods to say what format of parameters your app will accept. With the example above, we'd want to write the following in our controller code:
+> It's a best practice to use "strong parameters," which is a pattern of using built-in methods to say what format of parameters your app will accept. With the example above, we'd want to write the following in our controller code:
 
 ```rb
 private
@@ -505,11 +541,13 @@ def article_params
   params.require(:article).permit(:title, :body)
 end
 ```
-<!--
-## Independent Practice: View Helper Research
+
+
+#### Independent Practice: View Helper Research
 
 Research one of the methods below, and prepare to give a 2 sentence explanation about where it is used and what it does to everyone!
 
+<details><summary>click to expand the list</summary>
 
 * `csrf_meta_tags`
 
@@ -551,8 +589,8 @@ Research one of the methods below, and prepare to give a 2 sentence explanation 
 
 * `simple_format`
 
-* `number_to_human` -->
-
+* `number_to_human` 
+</details>
 
 ### Closing Thoughts
 
