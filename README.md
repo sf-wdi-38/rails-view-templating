@@ -65,9 +65,11 @@ Partials allow us to take a portion of a template and move it into a separate fi
 - Separating code into partials makes our views more modular and easier to change.
 </details>
 
-### Adding Partials to a View
 
 Partials are always named starting with an underscore: `app/views/products/_form.html.erb` or `app/views/shared/_menu.rb`.  
+
+### Adding Partials to a View
+
 
 Partials are included from inside a view file.  The syntax uses the view helper method `render`: `<%= render "form" %>`.  Note that you don't include the starting `_` when rendering a partial.
 
@@ -119,8 +121,8 @@ Here is syntax for some use cases:
 1)  How can we split up pages into layout and views if the website is structured as shown below?
 
   <img src="https://raw.githubusercontent.com/sf-wdi-34/angular-routing/master/goats_app.png" width="600px" alt="goat app screenshots">
-
-  <details><summary>click for an answer</summary>
+  
+  <hr>
 
   In Rails, the page `<head>` will already be in the application layout.  We can move the top menu and the footer into the layout to reduce repetition in the individual pages.
 
@@ -142,7 +144,7 @@ Here is syntax for some use cases:
   </body>
   ```
 
-  **View templates:**
+  **Views:**
 
   ```
   <!-- app/views/goats/show.html.erb -->
@@ -247,10 +249,10 @@ By default, controller methods will render views files that match the controller
 
 <details><summary>click for a list</summary>
 
-* index - display a list of all the records for one type of resource
-* show - display details of one singe record
-* new - display a form for users to create a new record
-* edit - display a form for users to update a record
+* `index` - display a list of all the records for one type of resource
+* `show` - display details of one singe record
+* `new` - display a form for users to create a new record
+* `edit` - display a form for users to update a record
 
 </details>
 
