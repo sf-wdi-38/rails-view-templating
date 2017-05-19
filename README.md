@@ -5,15 +5,15 @@
 <!-- framing the "why" in big-picture/real world examples -->
 *This workshop is important because:*
 
-We want pages that users can see and interact with! And we want to take advantage of how easy Rails makes views if we follow the "Rails way".
+We want pages that users can see and interact with! And we want to take advantage of how easy Rails makes views... if we follow the "Rails way".
 
 ### Objectives
 *After this lesson, developers will be able to:*
 
+- Compare client-side and server-side templating.
 - Describe how layouts, views, and partials fit together for Rails' server-side templating.
-- Recognize Rails URL helpers and path helpers.
-- Explain benefits of using Rails form helpers and link helpers.
-- Find and determine correct syntax for Rails form helpers and link helpers.
+- Recognize Rails path helpers and URL helpers.
+- Explain benefits of using Rails form helpers and link helpers, and determine correct syntax for them.
 
 ### Where should we be now?
 *Before this workshop, developers should already be able to:*
@@ -21,20 +21,34 @@ We want pages that users can see and interact with! And we want to take advantag
 - Start a Rails app with a route and controller for a home page view.
 - Incorporate routes, a controller, and a model for a single resource.
 - Read and write routes.
+- Describe client-side templating.
+
+## Warmup: Client-side vs Server-side Template Rendering
+
+Work with a partner to answer the following questions.  Write your answers on your table.
+
+1. What is HTML "templating"? 
+
+2. We've been rendering templates on the client side with Angular, React, and ES6 string template literals.  This generally means the user will see part of the page, but the rest of the page is filled in after data comes back from an AJAX call.  List at least one benefit and one drawback of this approach. (Consider things like page load time, number of HTTP requests, user interaction, search engines reading pages.)
+
+3. Rails will render templates on the server side, adding data into an HTML file before sending it to the client side.  List at least one benefit and one drawback of this approach. (Consider things like page load time, number of HTTP requests, user interaction, search engines reading pages.)
+
 
 ## Putting Together the Page
 
-### Layouts
+In Rails, the pages a user sees are rendered on the server side as a combination of a layout template and a view template. The view template, in turn, might be built up with one or more smaller "partial" templates. The server has stitches together these pieces into one HTML file before sending the completed file to the client side for display.
 
-In Rails, the pages a user sees are rendered as a combination of a layout template and a view template. The view template, in turn, might be built up with one or more smaller "partial" templates.
+### Layout
 
-We can use layouts for the lines of HTML that link site-wide CSS and JavaScript files. We can also use it for material like a footer that stays the same across many pages from multiple controllers.
+When a Rails app is created, Rails will automatically add a main application layout file: **`app/views/layouts/application.html.erb`**. 
+
+We can use the main application layout for the lines of HTML that link site-wide CSS and JavaScript files. We can also use it for material like a footer that stays the same across all pages from multiple controllers.
 
 <img src="https://raw.githubusercontent.com/sf-wdi-34/angular-routing/master/views_layouts_malcolm.png" alt="single goat show page with details" width="60%">
 
-Views are always rendered into a `<%= yield %>` tag in a layout.
+Views are always rendered into a `<%= yield %>` tag in a layout. The `app/views/layouts/application.html.erb` layout already contains a `yield` statement, a `<head>` section, and links to the app's CSS and JavaScript files.
 
-When the app is created, Rails will automatically add a layout **`app/views/layouts/application.html.erb`**. This layout already contains a `yield` statement, a `<head>` section, and links to the app's CSS and JavaScript files.
+It is possible to use multiple layouts.
 
 ### Views
 
@@ -200,7 +214,7 @@ We can also move the header and/or the footer into a partial.  This option would
 
 Alternately, if the header is on every page, we could keep the main layout file short by adding a named `yield` and [`content_for`](http://guides.rubyonrails.org/layouts_and_rendering.html#using-the-content-for-method).
 
-**Layout:**
+**Layout with named `yield` and `content_for`:**
 
  ```
  <!DOCTYPE html>
@@ -233,7 +247,7 @@ Alternately, if the header is on every page, we could keep the main layout file 
 
 ## Views with Controllers
 
-Now that we've gone over how layout templates, view templates, and partial templates come together to create the pages users see, let's dive into how our apps' controllers will trigger these views.
+Now that we've gone over how layout templates, view templates, and partial templates come together to create the pages users see, let's dive into how our apps' controllers will trigger rendering these views.
 
 Every route in Rails will execute a method inside a controller. In Rails, the basic logic for rendering an HTML view is straightforward.  When the method is executed:
 
@@ -255,7 +269,7 @@ By default, controller methods will render views files that match the controller
 * `edit` - display a form for users to update a record
 
 </details>
-
+<br>
 
 And which RESTful controller actions in Rails DO NOT render an HTML view? What are their purposes?
 <details><summary>click for a list</summary>
