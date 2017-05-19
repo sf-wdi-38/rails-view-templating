@@ -55,8 +55,13 @@ Partials allow us to take a portion of a template and move it into a separate fi
 **Check for Understanding:** Why might we want to separate out portions of our HTML view templates?
 
 <details><summary>Ideas</summary>
+
 - A best practice is to always keep every template small. A rule of thumb would be to keep templates to about 50 lines for readability. If we wrote the bulk of our HTML directly in view templates, we'd quickly exceed this limit.
+
+
 - We might have content that is repeated on more than one page associated with a controller - partials help us reuse HTML code for this content.
+
+
 - Separating code into partials makes our views more modular and easier to change.
 </details>
 
