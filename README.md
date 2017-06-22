@@ -602,9 +602,6 @@ Research one of the methods below, and prepare to give a 2 sentence explanation 
 
 ### Additional Resources
 
-
-### Resources
-
 * [Glossary](glossary.md)  
 * Rails Guides:
   * [Action View Overview](http://guides.rubyonrails.org/action_view_overview.html)
