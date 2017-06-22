@@ -21,7 +21,7 @@ We want pages that users can see and interact with! And we want to take advantag
 - Start a Rails app with a route and controller for a home page view.
 - Incorporate routes, a controller, and a model for a single resource.
 - Read and write routes.
-- Describe client-side templating.
+- Describe templating.
 
 ## Warmup: Client-side vs Server-side Template Rendering
 
@@ -46,11 +46,11 @@ We can use the main application layout for the lines of HTML that link site-wide
 
 <img src="https://raw.githubusercontent.com/sf-wdi-34/angular-routing/master/views_layouts_malcolm.png" alt="single goat show page with details" width="60%">
 
-Views are always rendered into a `<%= yield %>` tag in a layout. The `app/views/layouts/application.html.erb` layout already contains a `yield` statement, a `<head>` section, and links to the app's CSS and JavaScript files.
+Templates are always rendered into a `<%= yield %>` tag in a layout. The `app/views/layouts/application.html.erb` layout already contains a `yield` statement, a `<head>` section, and links to the app's CSS and JavaScript files.
 
 It is possible to use multiple layouts.
 
-### Views
+### View Templates
 
 View templates contain all the content that's specific to one page.  
 
@@ -82,7 +82,7 @@ Partials allow us to take a portion of a template and move it into a separate fi
 
 Partials are always named starting with an underscore: `app/views/products/_form.html.erb` or `app/views/shared/_menu.rb`.  
 
-### Adding Partials to a View
+### Adding Partials to a View Template
 
 
 Partials are included from inside a view file.  The syntax uses the view helper method `render`: `<%= render "form" %>`.  Note that you don't include the starting `_` when rendering a partial.
@@ -158,7 +158,7 @@ Here is syntax for some use cases:
   </body>
   ```
 
-  **Views:**
+  **Templates:**
 
   ```
   <!-- app/views/goats/show.html.erb -->
@@ -198,7 +198,7 @@ We can also move the header and/or the footer into a partial.  This option would
   </body>
   ```
 
-  **Views:**
+  **Templates:**
 
   ```
   <!-- app/views/wecome/about.html.erb -->
@@ -228,7 +228,7 @@ Alternately, if the header is on every page, we could keep the main layout file 
  </html>
  ```
 
- **Views**:
+ **Templates**:
 
  ```
  <% content_for :head do %>
@@ -312,10 +312,10 @@ We've seen two ways to do something other than rendering the HTML view that matc
  - We can use a `render` statement to specify a view to render that doesn't match the action name.
 
 
-### JSON Views
+### JSON View Templates
 
 
-Rails 5 comes bundled with a [`jbuilder`](https://github.com/rails/jbuilder) gem that helps us create JSON views instead of HTML. Why is this awesome?
+Rails 5 comes bundled with a [`jbuilder`](https://github.com/rails/jbuilder) gem that helps us create JSON views instead of HTML. This gives us the flexibility to easily respond to requests for JSON content.
 
 **Check for Understanding**
 
