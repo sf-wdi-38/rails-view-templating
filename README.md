@@ -11,7 +11,7 @@ We want pages that users can see and interact with! And we want to take advantag
 *After this lesson, developers will be able to:*
 
 - Compare client-side and server-side templating.
-- Describe how layouts, views, and partials fit together for Rails' server-side templating.
+- Describe how layouts, view templates, and partials fit together for Rails' server-side templating.
 - Recognize Rails path helpers and URL helpers.
 - Explain benefits of using Rails form helpers and link helpers, and determine correct syntax for them.
 
@@ -594,7 +594,7 @@ Research one of the methods below, and prepare to give a 2 sentence explanation 
 
 ### Closing Thoughts
 
-- Describe how layouts, views & partials work together.
+- Describe how layouts, view templates, and partials work together.
 - How can we figure out what path helpers are available?
 - Why would we use `form_for` and `link_to`?
 - Where would you look for syntax for Rails form helpers?
