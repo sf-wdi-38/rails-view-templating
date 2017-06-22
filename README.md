@@ -29,7 +29,7 @@ Work with a partner to answer the following questions.  Write your answers on yo
 
 1. What is HTML "templating"? 
 
-2. We've been rendering templates on the client side with Angular, React, and ES6 string template literals.  This generally means the user will see part of the page, but the rest of the page is filled in after data comes back from an AJAX call.  List at least one benefit and one drawback of this approach. (Consider things like page load time, number of HTTP requests, user interaction, search engines reading pages.)
+2. We've been rendering templates on the client side with Angular, React, and/or ES6 string template literals.  This generally means the user will see part of the page, but the rest of the page is filled in after data comes back from an AJAX call.  List at least one benefit and one drawback of this approach. (Consider things like page load time, number of HTTP requests, user interaction, search engines reading pages.)
 
 3. Rails will render templates on the server side, adding data into an HTML file before sending it to the client side.  List at least one benefit and one drawback of this approach. (Consider things like page load time, number of HTTP requests, user interaction, search engines reading pages.)
 
